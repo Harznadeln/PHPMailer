@@ -416,7 +416,9 @@ class POP3
      */
     protected function checkResponse($string)
     {
-        if (strpos($string, '+OK') !== 0) {
+        $isPositiveResponse = strpos($string, '+OK') === 0;
+
+        if (!$isPositiveResponse) {
             $this->setError("Server reported an error: $string");
 
             return false;

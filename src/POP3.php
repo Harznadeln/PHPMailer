@@ -286,9 +286,9 @@ class POP3
         stream_set_timeout($this->pop_conn, $tval, 0);
 
         //Get the POP3 server response
-        $pop3_response = $this->getResponse();
+        $serverGreeting = $this->getResponse();
         //Check for the +OK
-        if ($this->checkResponse($pop3_response)) {
+        if ($this->checkResponse($serverGreeting)) {
             //The connection is established and the POP3 server is talking
             $this->connected = true;
 

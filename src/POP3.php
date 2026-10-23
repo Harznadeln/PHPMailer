@@ -235,7 +235,7 @@ class POP3
             $this->tval = (int) $timeout;
         }
     }
-    
+
     /**
      * Connect to a POP3 server.
      *
@@ -324,21 +324,25 @@ class POP3
         }
         $username = self::stripControls($username);
         $password = self::stripControls($password);
-        //Send the Username
-        $this->sendString("USER $username" . static::LE);
-        $pop3_response = $this->getResponse();
-        if ($this->checkResponse($pop3_response)) {
-            //Send the Password
-            $this->sendString("PASS $password" . static::LE);
-            $pop3_response = $this->getResponse();
-            if ($this->checkResponse($pop3_response)) {
-                return true;
-            }
-        }
+    //Send the Username
+    $this->sendString("USER $username" . static::LE);
+    $pop3_response = $this->getResponse();
 
+    if (!$this->checkResponse($pop3_response)) {
         return false;
     }
 
+    //Send the Password
+    $this->sendString("PASS $password" . static::LE);
+    $pop3_response = $this->getResponse();
+
+    if (!$this->checkResponse($pop3_response)) {
+        return false;
+    }
+
+    return true;
+    }
+    
     /**
      * Disconnect from the POP3 server.
      */

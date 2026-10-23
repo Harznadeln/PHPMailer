@@ -200,18 +200,7 @@ class POP3
     public function authorise($host, $port = false, $timeout = false, $username = '', $password = '', $debug_level = 0)
     {
         $this->host = $host;
-        //If no port value provided, use default
-        if (false === $port) {
-            $this->port = static::DEFAULT_PORT;
-        } else {
-            $this->port = (int) $port;
-        }
-        //If no timeout value provided, use default
-        if (false === $timeout) {
-            $this->tval = static::DEFAULT_TIMEOUT;
-        } else {
-            $this->tval = (int) $timeout;
-        }
+        $this->configureConnectionSettings($port, $timeout);
         $this->do_debug = (int) $debug_level;
         $this->username = self::stripControls($username);
         $this->password = self::stripControls($password);
@@ -232,7 +221,21 @@ class POP3
 
         return false;
     }
+    private function configureConnectionSettings($port, $timeout)
+    {
+        if (false === $port) {
+            $this->port = static::DEFAULT_PORT;
+        } else {
+            $this->port = (int) $port;
+        }
 
+        if (false === $timeout) {
+            $this->tval = static::DEFAULT_TIMEOUT;
+        } else {
+            $this->tval = (int) $timeout;
+        }
+    }
+    
     /**
      * Connect to a POP3 server.
      *
